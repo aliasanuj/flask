@@ -17,6 +17,14 @@ def functionAbout():
 def functionBootStrap():
     return render_template('bootstrap.html')
 
+@app.route("/contact")
+def functionContact():
+    return render_template('contact.html')
+
+@app.route("/post")
+def functionPost():
+    return render_template('post.html')
+
 
 # app = Flask(__name__)
 # print(type(app))
