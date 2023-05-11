@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import mysql.connector
 import datetime
+import json
 
 app = Flask(__name__)
 
@@ -16,13 +17,9 @@ def functionAbout():
 def functionBootStrap():
     return render_template('bootstrap.html')
 
-'''DB connection'''
-db_config = {
-    'host':"localhost",
-    'user':"root",
-    'password':"Switch@2023",
-    'database':"databasename01"
-}
+
+with open('config.json','r') as f:
+    config = json.load(f)['local_URI']
 @app.route("/contact", methods=['GET','POST'])
 def functionContact():
     if (request.method=='POST'):
@@ -31,7 +28,8 @@ def functionContact():
         phoneNo = request.form['phoneNo']
         createdTime = datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S")
         message = request.form['message']
-        db = mysql.connector.connect(**db_config)
+
+        db = mysql.connector.connect(**config)
         cursor = db.cursor()
         query = "INSERT INTO flaskContact (firstName, Email, phoneNo, createdTime, message)  values (%s,%s,%s,%s,%s)"
         values = (firstName, Email, phoneNo, createdTime, message)
